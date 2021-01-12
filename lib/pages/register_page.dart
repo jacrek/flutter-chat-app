@@ -1,7 +1,11 @@
-import 'package:chatrealtime/widgets/boton_azul.dart';
+import 'package:chatrealtime/helpers/mostrar_alerta.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:chatrealtime/services/auth_service.dart';
 
 
+import 'package:chatrealtime/widgets/boton_azul.dart';
 import 'package:chatrealtime/widgets/custom_input.dart';
 import 'package:chatrealtime/widgets/labels.dart';
 import 'package:chatrealtime/widgets/logo.dart';
@@ -28,9 +32,6 @@ class RegisterPage extends StatelessWidget {
 
                 Text('Términos y Condiciones de uso',style: TextStyle(fontWeight: FontWeight.w200),),
 
-
-
-
               ],
             ),
           ),
@@ -55,6 +56,9 @@ class __FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+
+    final authService = Provider.of<AuthService>(context);
+
     return Container(
 
       margin: EdgeInsets.only(top: 40),
@@ -67,26 +71,37 @@ class __FormState extends State<_Form> {
             placeholder: 'Nombre',
             keyboardType: TextInputType.text,
             textController: nameCtrl,
-            isPassword: true,
           ),
           CustomInput(
             icon: Icons.mail_outline,
             placeholder: 'correo',
             textController: emailCtrl,
-            isPassword: true,
           ),
           CustomInput(
             icon: Icons.lock_outline,
             placeholder: 'Contraseña',
             keyboardType: TextInputType.emailAddress,
             textController: passCtrl,
+            isPassword: true,
+
           ),
 
           BotonAzul(
-            text: 'Ingrese',
-            onPressed: (){
+            text: 'Crear cuenta',
+            onPressed: authService.autenticando ? null : () async{
+              print(nameCtrl.text);
               print(emailCtrl.text);
               print(passCtrl.text);
+
+              final registroOk = await authService.register(nameCtrl.text.trim(), emailCtrl.text.trim(), passCtrl.text.trim());
+
+              if (registroOk == true){
+                //TODO: Concetar al socket server
+                Navigator.pushReplacementNamed(context, 'usuarios');
+              }else{
+                mostrarAlerta(context, 'Registro incorrecto', registroOk);
+              }
+
             },
           ),
 
