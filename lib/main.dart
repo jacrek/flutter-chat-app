@@ -1,9 +1,12 @@
-import 'package:chatrealtime/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:chatrealtime/services/auth_service.dart';
+import 'package:chatrealtime/services/socket_service.dart';
+import 'package:chatrealtime/services/chat_service.dart';
+
+
 import 'package:chatrealtime/routes/routes.dart';
-import 'package:provider/single_child_widget.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,6 +20,8 @@ class MyApp extends StatelessWidget {
 
       providers: [
         ChangeNotifierProvider(create: ( _ ) => AuthService()),
+        ChangeNotifierProvider(create: ( _ ) => SocketService()),
+        ChangeNotifierProvider(create: ( _ ) => ChatService()),
       ],
 
       child: MaterialApp(

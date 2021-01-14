@@ -1,4 +1,5 @@
 import 'package:chatrealtime/helpers/mostrar_alerta.dart';
+import 'package:chatrealtime/services/socket_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -58,6 +59,8 @@ class __FormState extends State<_Form> {
   Widget build(BuildContext context) {
 
     final authService = Provider.of<AuthService>(context);
+    final socketService = Provider.of<SocketService>(context);
+
 
     return Container(
 
@@ -97,6 +100,7 @@ class __FormState extends State<_Form> {
 
               if (registroOk == true){
                 //TODO: Concetar al socket server
+                socketService.connect();
                 Navigator.pushReplacementNamed(context, 'usuarios');
               }else{
                 mostrarAlerta(context, 'Registro incorrecto', registroOk);

@@ -1,5 +1,6 @@
 
 import 'package:chatrealtime/services/auth_service.dart';
+import 'package:chatrealtime/services/socket_service.dart';
 import 'package:chatrealtime/widgets/boton_azul.dart';
 import 'package:flutter/material.dart';
 
@@ -58,6 +59,7 @@ class __FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    final socketService = Provider.of<SocketService>(context);
     return Container(
 
       margin: EdgeInsets.only(top: 40),
@@ -90,6 +92,7 @@ class __FormState extends State<_Form> {
 
               if (loginOK) {
                 //TODO: Conectar a nuestro socket server
+                socketService.connect();
                 Navigator.pushReplacementNamed(context, 'usuarios');
 
               }else{
